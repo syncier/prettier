@@ -127,8 +127,7 @@ function genericPrint(path, options, print) {
           ])
         )
       : "",
-    nextEmptyLine,
-    hasEndComments(node) && !isNode(node, ["documentHead", "documentBody"])
+    shouldPrintEndComments(node)
       ? align(
           node.type === "sequenceItem" ? 2 : 0,
           concat([
@@ -153,6 +152,7 @@ function genericPrint(path, options, print) {
           ])
         )
       : "",
+    nextEmptyLine,
   ]);
 }
 
@@ -551,6 +551,7 @@ function align(n, doc) {
 }
 
 function isInlineNode(node) {
+  /* istanbul ignore next */
   if (!node) {
     return true;
   }
@@ -569,6 +570,7 @@ function isInlineNode(node) {
 }
 
 function isSingleLineNode(node) {
+  /* istanbul ignore next */
   if (!node) {
     return true;
   }
@@ -701,6 +703,12 @@ function needsSpaceInFrontOfMappingValue(node) {
   return node.key.content && node.key.content.type === "alias";
 }
 
+function shouldPrintEndComments(node) {
+  return (
+    hasEndComments(node) && !isNode(node, ["documentHead", "documentBody"])
+  );
+}
+
 function printNextEmptyLine(path, originalText) {
   const node = path.getValue();
   const root = path.stack[0];
@@ -711,7 +719,9 @@ function printNextEmptyLine(path, originalText) {
   if (!root.isNextEmptyLinePrintedChecklist[node.position.end.line]) {
     if (isNextLineEmpty(node, originalText)) {
       root.isNextEmptyLinePrintedChecklist[node.position.end.line] = true;
-      return softline;
+      if (!shouldPrintEndComments(path.getParentNode())) {
+        return softline;
+      }
     }
   }
 
