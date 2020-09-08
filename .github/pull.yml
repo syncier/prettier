@@ -4,4 +4,4 @@ rules:
     upstream: prettier:master
     mergeMethod: none
     mergeUnstable: false
-label: "pull :arrow_heading_down:"
+label: "PR :arrow_heading_down:"
