@@ -3,3 +3,4 @@ rules:
   - base: master
     upstream: prettier:master
     mergeMethod: none
+    mergeUnstable: false
