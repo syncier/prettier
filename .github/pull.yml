@@ -4,7 +4,3 @@ rules:
     upstream: prettier:master
     mergeMethod: none
     mergeUnstable: false
-    reviewers:
-      - "@syncier/infrastructure-team"
-
-label: "PR :arrow_heading_down:"
